@@ -1,9 +1,34 @@
+#' filterFitTable
+#'
+#' @param table data.frame of absolute cn fits
+#' @param metadata data.frame of workflow metadata
+#' @param filter_underpowered Boolean to filter underpowered fits
+#' @param filter_homozygous Boolean to filter based on homozygous loss
+#' @param af_cutoff Float for TP53 anchoring difference threshold
+#' @param ranks Integer for number of top fits to return
+#'
+#' @returns data.frame
+#' @export
 filterFitTable <- function(table = NULL,
                            metadata = NULL,
                            filter_underpowered = NULL,
                            filter_homozygous = NULL,
                            af_cutoff = NULL,
                            ranks = 10) {
+
+  if(is.null(table)){
+    stop("no data")
+  }
+
+  if(is.null(metadata)){
+    stop("no metadata")
+  }
+
+  stopifnot(is.double(af_cutoff),af_cutoff > 0,af_cutoff < 1)
+  stopifnot(is.logical(filter_underpowered))
+  stopifnot(is.logical(filter_homozygous))
+  stopifnot(is.numeric(ranks),floor(ranks) == ranks,ranks > 1)
+
   fitTable <- dplyr::left_join(table, metadata, by = "SAMPLE_ID") %>%
     dplyr::select(-file) %>%
     dplyr::relocate(PATIENT_ID, .after = SAMPLE_ID) %>%

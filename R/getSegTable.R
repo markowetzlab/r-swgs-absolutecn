@@ -1,3 +1,9 @@
+#' getSegTable
+#'
+#' @param x Object of class "QDNASeqCopyNumbers"
+#'
+#' @returns data.frame
+#' @export
 getSegTable <- function(x) {
   if (inherits(x, what = "QDNAseqCopyNumbers", which = F)) {
     sn <- Biobase::assayDataElement(x, "segmented")

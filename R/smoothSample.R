@@ -1,12 +1,21 @@
-# segment smoothing function
-# Adjusted recursively to drop max segments below threshold using maximum StdDev
-# difference in means during segmentation splits in CBS
+#' smoothSample
+#'
+#' Adjusted recursively to drop max segments below threshold using maximum StdDev
+#' difference in means during segmentation splits in CBS
+#'
+#' @param relcn QDNASeq object
+#' @param smooth Boolean to apply smoothing
+#' @param maxSegs Maximum segments
+#' @param seed Value for seed
+#'
+#' @returns QDNASeq object
+#' @export
 smoothSample <- function(relcn = NULL,
                           smooth = FALSE,
                           maxSegs = 300,
                           seed = NULL) {
   if (is.null(relcn)) {
-    stop("segment smoothing provided with no data")
+    stop("no data")
   }
 
   stopifnot(is.logical(smooth))
@@ -14,7 +23,7 @@ smoothSample <- function(relcn = NULL,
 
   # Check if smoothing needed
   relative_tmp <- NULL
-  if (smooth) {
+  if(smooth){
     currsamp <- relcn
 
     maxseg <- maxSegs
@@ -37,8 +46,7 @@ smoothSample <- function(relcn = NULL,
         seeds = seed
       )
 
-      segments <- Biobase::assayDataElement(currsamp, "segmented")[condition, , drop =
-                                                                     FALSE]
+      segments <- Biobase::assayDataElement(currsamp, "segmented")[condition, ,drop = FALSE]
       segments <- apply(segments, 2, rle)
       segnum <- as.numeric(lapply(segments, function(x) {
         length(x$lengths)
@@ -46,7 +54,6 @@ smoothSample <- function(relcn = NULL,
 
       sdadjust <- sdadjust + 0.5
     }
-    #relative_tmp <- currsamp
     relcn <- currsamp
   }
   return(relcn)

@@ -1,8 +1,19 @@
+#' predictProfile
+#'
+#' @param qctable data.frame of absolute fits
+#' @param model ML model object
+#' @param method Method for autofitting
+#' @param flagThreshold Threshold for flagging fits
+#' @param errorMetric Error metric for fitting
+#'
+#' @returns Data.frame of fitted absolute fits
+#' @export
 predictProfile <- function(qctable = NULL,
                            model = NULL,
                            method = "randforest",
                            flagThreshold = 0.74,
-                           errorMetric = "clonality") {
+                           errorMetric = "clonality"){
+
   if (is.null(model) & method == "randforest") {
     stop("no model")
   }
@@ -61,7 +72,7 @@ predictProfile <- function(qctable = NULL,
                  "triageValue",
                  "flag")
     qctable <- qctable %>%
-      dplyr::mutate(!!!setNames(rep(NA, length(newCols)), newCols))
+      dplyr::mutate(!!!stats::setNames(rep(NA, length(newCols)), newCols))
   })
   qctable <- qctable %>%
     dplyr::ungroup() %>%

@@ -4,9 +4,9 @@
 \name{rswgsabsolutecn-package}
 \alias{rswgsabsolutecn}
 \alias{rswgsabsolutecn-package}
-\title{rswgsabsolutecn: R package for functions invcluded in the swgs-absolutecn workflow}
+\title{rswgsabsolutecn: r-swgs-absolutecn}
 \description{
-R functions used by swgs-absolutecn workflow
+R package for functions invcluded in the swgs-absolutecn workflow.
 }
 \author{
 \strong{Maintainer}: Philip Smith \email{philip.smith@cruk.cam.ac.uk}

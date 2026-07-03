@@ -1,3 +1,9 @@
+#' collapseRDS
+#'
+#' @param rds.list list of rds objects
+#'
+#' @returns combined rds object
+#' @export
 collapseRDS <- function(rds.list) {
   comb <- rds.list[[1]]
   if (length(rds.list) > 1) {

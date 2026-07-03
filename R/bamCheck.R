@@ -1,13 +1,25 @@
-bamCheck <- function(x = NULL,filetype=NULL,outname = NULL) {
+#' bamCheck
+#'
+#' @param x file path to BAM/CRAM file
+#' @param filetype character string matching either "BAM" or "CRAM"
+#' @param outname file path for output
+#'
+#' @returns none
+#' @export
+bamCheck <- function(x = NULL,filetype = NULL,outname = NULL) {
   if (is.null(x)) {
     stop("no BAMs provided")
+  } else if(!file.exists(x)){
+    stop("BAM file does not exist")
   }
-  if (is.null(filetype)) {
-    stop("no filetype provided")
-  }
+
   if (is.null(outname)) {
     stop("no outname provided")
   }
+
+  rlang::arg_match(filetype,
+                   values = c("BAM","CRAM"),
+                   multiple = FALSE)
 
   ## Call samtools using cmdline
   cmd <- paste0("samtools quickcheck -q ", x)
@@ -28,7 +40,7 @@ bamCheck <- function(x = NULL,filetype=NULL,outname = NULL) {
     }
 
   } else {
-    log_vector <- paste0("BAM/CRAM invalid or missing - ", x)
+    log_vector <- paste0("BAM/CRAM invalid - ", x)
     check_vector <- TRUE
   }
 
