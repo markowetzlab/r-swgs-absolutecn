@@ -107,7 +107,7 @@ setArgs <- function(script=NULL){
                                      type = "logical",default = NULL,
                                      help = "preset ploidy-purity boolean") |>
       optparse::add_option("--reference",action = "store",type = "character",
-                           default = NULL,help = "character string of genome reference file (CRAM)") |>
+                           default = NULL,help = "Path for genome reference fasta file (CRAM)") |>
       optparse::add_option("--bamOut",action = "store",type = "character",
                            default = NULL,help = "Path for sequence alignment output file")
   }

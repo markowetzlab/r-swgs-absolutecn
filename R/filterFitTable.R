@@ -40,14 +40,20 @@ filterFitTable <- function(table = NULL,
 
   ## Apply hard filters
   ##  filter under powered fits when config variable is TRUE
-  if (filter_underpowered) {
+  if(filter_underpowered) {
     fitTable <- fitTable %>%
       dplyr::filter(powered == 1)
+    if(nrow(fitTable) == 0){
+      stop("No fits meet filtering criteria - filter_underpowered - Set to FALSE")
+    }
   }
   ## filter high prop homozygous loss when config variable is TRUE
-  if (filter_homozygous) {
+  if(filter_homozygous) {
     fitTable <- fitTable %>%
       dplyr::filter(homozygousLoss <= homozygous_prop)
+    if(nrow(fitTable) == 0){
+      stop("No fits meet filtering criteria - filter_homozygous - Set to FALSE")
+    }
   }
 
   # standard filtering
