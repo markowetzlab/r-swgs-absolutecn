@@ -116,6 +116,8 @@ setArgs <- function(script=NULL){
     argparse <- optparse::add_option(object = argparse,"--filtOut",action = "store",
                                      type = "character",default = NULL,
                                      help = "Path for filtered output file") |>
+      optparse::add_option("--pdfOut",action = "store",type = "character",
+                           default = NULL,help = "Path for sunrise output file") |>
       optparse::add_option("--fitOut",action = "store",type = "character",
                          default = NULL,help = "Path for fitting output file") |>
       optparse::add_option("--pl_min",action = "store",type = "double",
