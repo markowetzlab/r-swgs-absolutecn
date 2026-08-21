@@ -10,7 +10,7 @@ setArgs <- function(script=NULL){
 
   argparse <- optparse::OptionParser()
 
-  if(script %in% c("downsampleBams","gridsearch","qdnaseqMod","qdnaseqRelToAbs","splitInput")){
+  if(script %in% c("downsampleBams","gridsearch","qdnaseqMod","qdnaseqRelToAbs","splitInput","computeSignatures")){
     argparse <- optparse::add_option(object = argparse,"--sampleName",action = "store",
                                      type = "character",default = NULL,
                                      help = "sample name string")
@@ -34,7 +34,7 @@ setArgs <- function(script=NULL){
                                      help = "Path for rds input file")
   }
 
-  if(script %in% c("autofit","combineResults","splitInput")){
+  if(script %in% c("autofit","combineResults","splitInput","computeSignatures")){
     argparse <- optparse::add_option(object = argparse,"--tsv",action = "store",
                                      type = "character",default = NULL,
                                      help = "Input path for TSV file")
@@ -70,7 +70,7 @@ setArgs <- function(script=NULL){
                                      help = "Path for tab output file")
   }
 
-  if(script %in% c("gridsearch","qdnaseqRelToAbs")){
+  if(script %in% c("gridsearch","qdnaseqRelToAbs","computeSignatures")){
     argparse <- optparse::add_option(object = argparse,"--plotOut",action = "store",
                                      type = "character",default = NULL,
                                      help = "Path for plotting output file") |>
@@ -84,7 +84,7 @@ setArgs <- function(script=NULL){
                                      help = "Path for bamCheck output file")
   }
 
-  if(script %in% c("gridsearch","qdnaseqMod","qdnaseqRelToAbs")){
+  if(script %in% c("gridsearch","qdnaseqMod","qdnaseqRelToAbs","computeSignatures")){
     argparse <- optparse::add_option(object = argparse,"--genome",action = "store",
                                      type = "character",default = NULL,
                                      help = "string of genome build") |>
@@ -152,6 +152,14 @@ setArgs <- function(script=NULL){
                            default = NULL,help = "seed value") |>
       optparse::add_option("--pairedEnd",action = "store",type = "logical",
                            default = NULL,help = "pairedEnd boolean")
+  }
+
+  if(script == "computeSignatures"){
+    argparse <- optparse::add_option(object = argparse,"--tsvDrews",action = "store",
+                                     type = "character",default = NULL,
+                                     help = "Drews signature output path") |>
+      optparse::add_option("--tsvMac",action = "store",type = "character",
+                           default = NULL,help = "Mac signature output path")
   }
   return(argparse)
 }
