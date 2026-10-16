@@ -8,7 +8,7 @@ predictProfile(
   qctable = NULL,
   model = NULL,
   method = "randforest",
-  flagThreshold = 0.74,
+  flagThreshold = 0.84,
   errorMetric = "clonality"
 )
 }

@@ -1,15 +1,14 @@
 Package: rswgsabsolutecn
 Title: r-swgs-absolutecn
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     person("Philip", "Smith", , "philip.smith@cruk.cam.ac.uk", role = c("aut", "cre"))
-Description: R package for functions invcluded in the swgs-absolutecn workflow.
+Description: R package for functions included in the swgs-absolutecn workflow.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Depends: 
-    R (>= 3.5)
+    R (>= 4.1)
 LazyData: true
 biocViews:
 Imports: 
@@ -19,9 +18,15 @@ Imports:
     optparse,
     parsnip,
     QDNAseqmod,
+    ranger,
     rlang,
     stats,
     stringr,
     tibble
+Suggests:
+    testthat (>= 3.0.0),
+    withr
+Config/testthat/edition: 3
 Remotes:
     markowetzlab/QDNAseqmod
+Config/roxygen2/version: 8.0.0

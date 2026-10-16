@@ -6,10 +6,15 @@
 \alias{rswgsabsolutecn-package}
 \title{rswgsabsolutecn: r-swgs-absolutecn}
 \description{
-R package for functions invcluded in the swgs-absolutecn workflow.
+R package for functions included in the swgs-absolutecn workflow.
 }
 \author{
 \strong{Maintainer}: Philip Smith \email{philip.smith@cruk.cam.ac.uk}
+
+Authors:
+\itemize{
+  \item Philip Smith \email{philip.smith@cruk.cam.ac.uk}
+}
 
 }
 \keyword{internal}
