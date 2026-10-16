@@ -26,14 +26,21 @@ getGeneSeg <- function(target = NULL,
   cn_obj <- abs_data[to_use, ]
   bin_pos <- Biobase::fData(cn_obj)[, c("chromosome", "start", "end")]
 
-  position <- as.numeric(stringr::str_split(
-    string = target,
-    pattern = ":|-",
-    simplify = T
-  ))
-  names(position) <- c("chr", "start", "end")
+  stopifnot(length(target) == 1)
+  parts <- stringr::str_match(target, "^(?:chr)?([^:]+):([0-9]+)-([0-9]+)$")
+  if(is.na(parts[1, 1])) {
+    stop(paste0("target not in format 'chr:start-end' - ", target))
+  }
+  targetChr <- parts[1, 2]
+  position <- as.numeric(parts[1, 3:4])
+  names(position) <- c("start", "end")
+  stopifnot(position["start"] <= position["end"])
 
-  gene_chr_pos <- bin_pos[bin_pos$chromosome == position["chr"],]
+  onChr <- as.character(bin_pos$chromosome) == targetChr
+  gene_chr_pos <- bin_pos[onChr, ]
+  if(nrow(gene_chr_pos) == 0) {
+    stop(paste0("no bins in use on chromosome ", targetChr, " - ", target))
+  }
 
   minusStart <- gene_chr_pos$start - position["start"]
   min_start <- min(which(min(abs(minusStart)) == abs(minusStart)))
@@ -49,8 +56,8 @@ getGeneSeg <- function(target = NULL,
     min_end <- min_end + 1
   }
 
-  index_min <- which(bin_pos$chromosome == position["chr"] & bin_pos$start == gene_chr_pos[min_start, 2])
-  index_max <- which(bin_pos$chromosome == position["chr"] & bin_pos$end == gene_chr_pos[min_end, 3])
+  index_min <- which(onChr & bin_pos$start == gene_chr_pos[min_start, 2])
+  index_max <- which(onChr & bin_pos$end == gene_chr_pos[min_end, 3])
   gene_pos <- seq.int(index_min, index_max, 1)
 
   return(gene_pos)
