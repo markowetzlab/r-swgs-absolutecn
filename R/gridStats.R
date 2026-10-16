@@ -18,7 +18,8 @@ gridStats <- function(obj=NULL,ploidy=NULL,purity=NULL){
 
   seg <- Biobase::assayDataElement(obj,"segmented")
   cn <- Biobase::assayDataElement(obj,"copynumber")
-  rel_ploidy <- mean(cn,na.rm=T)
+  chromosomes <- Biobase::fData(obj)$chromosome
+  rel_ploidy <- mean(cn,na.rm=TRUE)
   cellploidy <- purity * ploidy + (2 * (1 - purity))
   seqdepth <- rel_ploidy / cellploidy
 
@@ -32,7 +33,8 @@ gridStats <- function(obj=NULL,ploidy=NULL,purity=NULL){
               abs_seg=abs_seg,
               abs_cn=abs_cn,
               integer_seg=integer_seg,
-              errors=errors))
+              errors=errors,
+              chromosomes=chromosomes))
 }
 
 #' depthtocn
