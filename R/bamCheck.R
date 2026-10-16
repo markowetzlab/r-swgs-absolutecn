@@ -17,14 +17,23 @@ bamCheck <- function(x = NULL,filetype = NULL,outname = NULL) {
     stop("no outname provided")
   }
 
+  # Remove existing bam.ok/bam.invalid files to prevent false pass
+  if (grepl("_bam\\.ok$", outname)) {
+    invalidOut <- sub("_bam\\.ok$", "_bam.invalid", outname)
+  } else {
+    invalidOut <- paste0(outname, ".invalid")
+  }
+  unlink(c(outname, invalidOut))
+
   rlang::arg_match(filetype,
                    values = c("BAM","CRAM"),
                    multiple = FALSE)
 
-  ## Call samtools using cmdline
-  cmd <- paste0("samtools quickcheck -q ", x)
+  ## Call samtools using cmdline - path shell-quoted as it could contain spaces
+  xQ <- shQuote(x)
+  cmd <- paste0("samtools quickcheck -q ", xQ)
 
-  typecmd <- paste0("head -c 4 ", x)
+  typecmd <- paste0("head -c 4 ", xQ)
   typecheck <- as.character(system(typecmd,intern = TRUE))
 
   if (system(cmd) == 0){
@@ -45,8 +54,7 @@ bamCheck <- function(x = NULL,filetype = NULL,outname = NULL) {
   }
 
   if(check_vector) {
-    outname <- gsub(pattern = "ok", replacement = "invalid", outname)
-    writeLines(text = as.character(log_vector), con = outname)
+    writeLines(text = as.character(log_vector), con = invalidOut)
   } else {
     writeLines(text = as.character(log_vector), con = outname)
   }
