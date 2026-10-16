@@ -26,7 +26,7 @@ filterFitTable <- function(table = NULL,
     stop("no metadata")
   }
 
-  stopifnot(is.double(af_cutoff),af_cutoff > 0,af_cutoff < 1)
+  stopifnot(is.double(af_cutoff),af_cutoff > 0,af_cutoff <= 1)
   stopifnot(is.numeric(homozygous_prop))
   stopifnot(is.logical(filter_underpowered))
   stopifnot(is.logical(filter_homozygous))
@@ -61,7 +61,7 @@ filterFitTable <- function(table = NULL,
   ## select ploidy with the lowest clonality within a unique ploidy state
   ## select top 10 ploidy states with the lowest clonality values
   ## rank by clonality within a sample across ploidy in top 10
-  ## retain samples without TP53 mutations and where expected and observed TP53freq <=0.15
+  ## retain samples without TP53 mutations and where expected and observed TP53freq <= af_cutoff
   filtered_results <- fitTable %>%
     dplyr::group_by(SAMPLE_ID, ploidy) %>%
     dplyr::mutate(rank_clonality = dplyr::min_rank(clonality)) %>%
@@ -69,8 +69,13 @@ filterFitTable <- function(table = NULL,
     dplyr::group_by(SAMPLE_ID) %>%
     dplyr::top_n(-ranks, wt = clonality) %>%
     dplyr::mutate(rank_clonality = dplyr::min_rank(clonality)) %>%
-    dplyr::filter(is.na(TP53freq) |
-                    dplyr::near(expected_TP53_AF, TP53freq, tol = af_cutoff)) %>%
+    # af_cutoff = 1 disables the TP53 filter.
+    # An undefined expected AF cannot match an observed TP53
+    # mutation, so those fits are excluded explicitly
+    dplyr::filter(af_cutoff >= 1 |
+                    is.na(TP53freq) |
+                    (!is.na(expected_TP53_AF) &
+                       abs(expected_TP53_AF - TP53freq) <= af_cutoff)) %>%
     dplyr::arrange(PATIENT_ID, SAMPLE_ID)
 
   pruned_results <- filtered_results %>%
