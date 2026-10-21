@@ -1,6 +1,6 @@
 Package: rswgsabsolutecn
 Title: r-swgs-absolutecn
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: 
     person("Philip", "Smith", , "philip.smith@cruk.cam.ac.uk", role = c("aut", "cre"))
 Description: R package for functions included in the swgs-absolutecn workflow.
@@ -29,4 +29,4 @@ Suggests:
 Config/testthat/edition: 3
 Remotes:
     markowetzlab/QDNAseqmod
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.1

@@ -1,0 +1,142 @@
+---
+title: "CN profile fitting models"
+---
+
+Provided are the modelling methods used to generate the prediction model for fit selection.
+Full EDA and fitting is provided in the CINfits package .
+
+### Libraries
+    
+```{r libs,message=FALSE}
+# External
+library(tidymodels)
+library(glmnet)
+library(ranger)
+library(vip)
+library(xgboost)
+# Internal
+library(CINfits)
+```
+
+### vars
+
+```{r ext}
+## set cores for parallel compute
+cores <- parallel::detectCores()
+cores <- round(cores*0.8)
+
+# Set seed
+set.seed(0990)
+```
+
+```{r data}
+## Load and pre-process data
+cellQC <- read.table("britroc_multifit_meta.tsv",header = T,sep = "\t") %>% 
+    tidyr::drop_na() %>%
+    dplyr::mutate(use = factor(use))
+
+cellQcLong <- cellQC %>% 
+                tidyr::pivot_longer(cols = -c(1,ncol(.)),
+                                    names_to = "features")
+```
+
+### Running model fitting
+
+```{r datasplit}
+## Perform data split using 70/20/10 split and stratified sampling to balance outcome class
+dataTrainTest <- splitFittingData(cellQC,prop = 0.7,strata = "use")
+dataSplit <- dataTrainTest$dataSplit
+
+## Set training and test data sets
+trainingData <- dataTrainTest$trainingData
+testingData <- dataTrainTest$testingData
+```
+
+#### Set recipe for model
+
+```{r setmodelreceipe}
+# update sample column to be ID rather than predictor
+modelRecipeCV <- makeModelRecipe(data = trainingData,folds = 10,strata = "use")
+modelRecipe <- modelRecipeCV$recipe
+```
+
+#### Set cross-fold validation
+
+```{r CVfolds}
+## Set number of folds for cross-validation in training set
+folds <- modelRecipeCV$cv
+```
+
+#### set optimisation metric
+
+```{r optmetric}
+opt_metric <- "pr_auc"
+```
+
+#### RBF SVM
+
+```{r svmModel,message=FALSE,warning=FALSE}
+#set RBF svm
+final_linsvm_res <- fitSVM(data = dataSplit,
+                           model = modelRecipe,
+                           folds = folds,
+                           metric = opt_metric)
+```
+
+#### logistic regression
+
+```{r lgModel}
+## Set logistic regression with glmnet engine/function
+final_lr_res <- fitGLMLogisticRegression(data = dataSplit,
+                                         model = modelRecipe,
+                                         folds = folds,
+                                         mixture = 0.5,
+                                         metric = opt_metric)
+```
+
+#### Random forest
+
+```{r rfModel}
+## Set randomforest
+final_rf_res <- fitRandomForest(data = dataSplit,
+                                model = modelRecipe,
+                                folds = folds,
+                                metric = opt_metric,
+                                importance = "impurity",
+                                trees = 100)
+```
+
+#### xgb
+
+```{r setxgbt}
+final_xgb_res <- fitXGBtree(data = dataSplit,
+                            model = modelRecipe,
+                            folds = folds,
+                            metric = opt_metric,
+                            trees = 100)
+```
+
+```{r compare_models}
+models <- list(final_lr_res,final_linsvm_res,final_xgb_res,final_rf_res)
+modelMetrics <- CINfits:::collateModelMetrics(models = models)
+modelROC <- CINfits:::collateModelRoc(models = models,usePR = F)
+modelROCPR <- CINfits:::collateModelRoc(models = models,usePR = T)
+```
+
+```{r save_model}
+swgs_abs_rfranger_model <- workflows::extract_fit_parsnip(final_rf_res)
+usethis::use_data(swgs_abs_rfranger_model,overwrite = TRUE)
+```
+
+```{r sessioninfo}
+sessionInfo()
+```
+
+
+
+
+
+
+
+
+
