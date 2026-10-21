@@ -5,7 +5,7 @@
 \alias{swgs_abs_rfranger_model}
 \title{swgs_abs_rfranger_model
 Ranger randomforest model used in autofitting trained
-using 900 fitted profiles}
+using 931 fitted profiles}
 \format{
 character vector
 }
@@ -15,6 +15,6 @@ swgs_abs_rfranger_model
 \description{
 swgs_abs_rfranger_model
 Ranger randomforest model used in autofitting trained
-using 900 fitted profiles
+using 931 fitted profiles
 }
 \keyword{datasets}

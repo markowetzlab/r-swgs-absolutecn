@@ -3,7 +3,6 @@ title: "CN profile fitting models"
 ---
 
 Provided are the modelling methods used to generate the prediction model for fit selection.
-Full EDA and fitting is provided in the CINfits package .
 
 ### Libraries
     
