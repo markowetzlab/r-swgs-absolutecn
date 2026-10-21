@@ -13,7 +13,6 @@ library(glmnet)
 library(ranger)
 library(vip)
 library(xgboost)
-# Internal
 library(CINfits)
 ```
 
@@ -43,7 +42,7 @@ cellQcLong <- cellQC %>%
 
 ```{r datasplit}
 ## Perform data split using 70/20/10 split and stratified sampling to balance outcome class
-dataTrainTest <- splitFittingData(cellQC,prop = 0.7,strata = "use")
+dataTrainTest <- CINfits::splitFittingData(cellQC,prop = 0.7,strata = "use")
 dataSplit <- dataTrainTest$dataSplit
 
 ## Set training and test data sets
@@ -55,7 +54,7 @@ testingData <- dataTrainTest$testingData
 
 ```{r setmodelreceipe}
 # update sample column to be ID rather than predictor
-modelRecipeCV <- makeModelRecipe(data = trainingData,folds = 10,strata = "use")
+modelRecipeCV <- CINfits::makeModelRecipe(data = trainingData,folds = 10,strata = "use")
 modelRecipe <- modelRecipeCV$recipe
 ```
 
@@ -76,7 +75,7 @@ opt_metric <- "pr_auc"
 
 ```{r svmModel,message=FALSE,warning=FALSE}
 #set RBF svm
-final_linsvm_res <- fitSVM(data = dataSplit,
+final_linsvm_res <- CINfits::fitSVM(data = dataSplit,
                            model = modelRecipe,
                            folds = folds,
                            metric = opt_metric)
@@ -86,7 +85,7 @@ final_linsvm_res <- fitSVM(data = dataSplit,
 
 ```{r lgModel}
 ## Set logistic regression with glmnet engine/function
-final_lr_res <- fitGLMLogisticRegression(data = dataSplit,
+final_lr_res <- CINfits::fitGLMLogisticRegression(data = dataSplit,
                                          model = modelRecipe,
                                          folds = folds,
                                          mixture = 0.5,
@@ -97,7 +96,7 @@ final_lr_res <- fitGLMLogisticRegression(data = dataSplit,
 
 ```{r rfModel}
 ## Set randomforest
-final_rf_res <- fitRandomForest(data = dataSplit,
+final_rf_res <- CINfits::fitRandomForest(data = dataSplit,
                                 model = modelRecipe,
                                 folds = folds,
                                 metric = opt_metric,
@@ -108,7 +107,7 @@ final_rf_res <- fitRandomForest(data = dataSplit,
 #### xgb
 
 ```{r setxgbt}
-final_xgb_res <- fitXGBtree(data = dataSplit,
+final_xgb_res <- CINfits::fitXGBtree(data = dataSplit,
                             model = modelRecipe,
                             folds = folds,
                             metric = opt_metric,
