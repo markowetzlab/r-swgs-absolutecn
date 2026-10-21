@@ -123,6 +123,15 @@ modelROC <- CINfits:::collateModelRoc(models = models,usePR = F)
 modelROCPR <- CINfits:::collateModelRoc(models = models,usePR = T)
 ```
 
+```{r model_metrics}
+modelMetricsTable <- modelMetrics %>%
+                        select(-.estimator) %>%
+                        mutate(.estimate = round(.estimate,digits = 3)) %>%
+                        pivot_wider(names_from = ".metric",id_cols = "model",values_from = ".estimate") %>%
+                        arrange(desc(f_meas))
+modelMetricsTable
+```
+
 ```{r save_model}
 swgs_abs_rfranger_model <- workflows::extract_fit_parsnip(final_rf_res)
 usethis::use_data(swgs_abs_rfranger_model,overwrite = TRUE)
