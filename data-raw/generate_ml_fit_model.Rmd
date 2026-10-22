@@ -132,6 +132,18 @@ modelMetricsTable
 
 ```{r save_model}
 swgs_abs_rfranger_model <- workflows::extract_fit_parsnip(final_rf_res)
+# Store evaluated argument values - the quosures otherwise keep the
+# CINfits::fitRandomForest() environment (training data, tuning results and the
+# CINfits/yardstick/dials namespaces) inside the saved model
+swgs_abs_rfranger_model$spec$args[] <- lapply(swgs_abs_rfranger_model$spec$args, function(x) {
+  if (rlang::is_quosure(x)) rlang::new_quosure(rlang::eval_tidy(x), rlang::empty_env()) else x
+})
+swgs_abs_rfranger_model$spec$eng_args[] <- lapply(swgs_abs_rfranger_model$spec$eng_args, function(x) {
+  if (rlang::is_quosure(x)) rlang::new_quosure(rlang::eval_tidy(x), rlang::empty_env()) else x
+})
+swgs_abs_rfranger_model$spec$method$fit$args[] <- lapply(swgs_abs_rfranger_model$spec$method$fit$args, function(x) {
+  if (rlang::is_quosure(x)) rlang::new_quosure(rlang::eval_tidy(x), rlang::empty_env()) else x
+})
 usethis::use_data(swgs_abs_rfranger_model,overwrite = TRUE)
 ```
 
