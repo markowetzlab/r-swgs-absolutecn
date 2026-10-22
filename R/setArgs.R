@@ -34,7 +34,7 @@ setArgs <- function(script=NULL){
                                      help = "Path(s) for rds input file (comma-separated)")
   }
 
-  if(script %in% c("autofit","combineResults","splitInput","computeSignatures")){
+  if(script %in% c("autofit","combineResults","splitInput")){
     argparse <- optparse::add_option(object = argparse,"--tsv",action = "store",
                                      type = "character",default = NULL,
                                      help = "Path(s) for TSV file (comma-separated)")
@@ -79,7 +79,7 @@ setArgs <- function(script=NULL){
   if(script %in% c("gridsearch")){
     argparse <- optparse::add_option(object = argparse,"--project",action = "store",
                                      type = "character",default = NULL,
-                                     help = "charater string for project name")
+                                     help = "character string for project name")
   }
 
   if(script == "bamCheck"){
@@ -88,12 +88,12 @@ setArgs <- function(script=NULL){
                                      help = "Path for bamCheck output file")
   }
 
-  if(script %in% c("gridsearch","qdnaseqMod","qdnaseqRelToAbs","computeSignatures")){
+  if(script %in% c("gridsearch","qdnaseqMod","qdnaseqRelToAbs")){
     argparse <- optparse::add_option(object = argparse,"--genome",action = "store",
                                      type = "character",default = NULL,
                                      help = "string of genome build")
   }
-  if(script %in% c("gridsearch","qdnaseqMod","computeSignatures")){
+  if(script %in% c("gridsearch","qdnaseqMod")){
     argparse <- optparse::add_option(object = argparse,"--bin",action = "store",
                                      type = "double",default = NULL,
                                      help = "bin size in kilobases")
@@ -161,12 +161,5 @@ setArgs <- function(script=NULL){
                            default = NULL,help = "pairedEnd boolean")
   }
 
-  if(script == "computeSignatures"){
-    argparse <- optparse::add_option(object = argparse,"--tsvDrews",action = "store",
-                                     type = "character",default = NULL,
-                                     help = "Drews signature output path") |>
-      optparse::add_option("--tsvMac",action = "store",type = "character",
-                           default = NULL,help = "Mac signature output path")
-  }
   return(argparse)
 }

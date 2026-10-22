@@ -4,7 +4,7 @@
 \name{rswgsabsolutecn-package}
 \alias{rswgsabsolutecn}
 \alias{rswgsabsolutecn-package}
-\title{rswgsabsolutecn: r-swgs-absolutecn package to support shallow genome absolute copy number fitting pipeline (swgs-absbolutecn)}
+\title{rswgsabsolutecn: Absolute Copy Number Fitting for Shallow Whole Genome Sequencing}
 \description{
 R package for functions included in the swgs-absolutecn workflow.
 }

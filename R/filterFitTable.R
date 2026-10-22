@@ -67,8 +67,6 @@ filterFitTable <- function(table = NULL,
     dplyr::mutate(rank_clonality = dplyr::min_rank(clonality)) %>%
     dplyr::filter(rank_clonality == 1) %>%
     dplyr::group_by(SAMPLE_ID) %>%
-    # replace superceded top_n() call
-    #dplyr::top_n(-ranks, wt = clonality) %>%
     dplyr::slice_min(clonality, n = ranks, with_ties = TRUE, na_rm = TRUE) %>%
     dplyr::mutate(rank_clonality = dplyr::min_rank(clonality)) %>%
     # af_cutoff = 1 disables the TP53 filter.

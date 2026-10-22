@@ -10,8 +10,8 @@ qc.data <- read.table("data-raw/fit_QC_predownsample_withsmooth.tsv",header = T,
 rdsdata <- ""
 
 if(rdsdata == ""){
-  stop(paste0("no rds data provided - Download and decompress the britroc_1_additional_data.zip and provide
-       path to the britroc_smoothed_copyNumbersSegmented.rds file from https://doi.org/10.5281/zenodo.8304868"))
+  stop("no rds data provided - Download britroc_1_additional_data.zip from
+  https://doi.org/10.5281/zenodo.8304868 and provide path to the britroc_smoothed_copyNumbersSegmented.rds file")
 }
 
 rds.rel <- readRDS(rdsdata)
