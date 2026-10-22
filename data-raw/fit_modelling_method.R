@@ -1,7 +1,6 @@
 #load libraries
 library(QDNAseqmod)
 library(Biobase)
-library(stringr)
 library(dplyr)
 
 qc.data <- read.table("data-raw/fit_QC_predownsample_withsmooth.tsv",header = T,sep = "\t")
@@ -9,6 +8,11 @@ qc.data <- read.table("data-raw/fit_QC_predownsample_withsmooth.tsv",header = T,
 # File not provided
 # Download and decompress the britroc_1_additional_data.zip and provide path to the britroc_smoothed_copyNumbersSegmented.rds file
 rdsdata <- ""
+
+if(rdsdata == ""){
+  stop(paste0("no rds data provided - Download and decompress the britroc_1_additional_data.zip and provide
+       path to the britroc_smoothed_copyNumbersSegmented.rds file from https://doi.org/10.5281/zenodo.8304868"))
+}
 
 rds.rel <- readRDS(rdsdata)
 samples <- qc.data[which(qc.data$SAMPLE_ID %in% colnames(rds.rel)),]

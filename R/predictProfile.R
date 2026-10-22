@@ -141,7 +141,7 @@ predictProfile <- function(qctable = NULL,
         !!!sampleVals,
         use = TRUE
       ) %>%
-      dplyr::mutate(flag = ifelse(is.na(flag), NA, paste0("NOFIT|", flag))) %>%
+      dplyr::mutate(flag = ifelse(is.na(flag), "NOFIT", paste0("NOFIT|", flag))) %>%
       dplyr::mutate(notes = paste0("NO_FIT_FOUND|", notes))
   }
   return(qctable)
@@ -149,7 +149,7 @@ predictProfile <- function(qctable = NULL,
 
 triageProfile <- function(qctable = NULL,
                           flagThreshold = 0.84,
-                          errorMetric = "segvariance") {
+                          errorMetric = "clonality") {
   if(is.null(qctable)) {
     stop("no data")
   }

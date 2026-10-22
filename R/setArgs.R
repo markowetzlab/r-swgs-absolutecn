@@ -10,7 +10,7 @@ setArgs <- function(script=NULL){
 
   argparse <- optparse::OptionParser()
 
-  if(script %in% c("downsampleBams","gridsearch","qdnaseqMod","qdnaseqRelToAbs","splitInput","computeSignatures")){
+  if(script %in% c("downsampleBams","gridsearch","qdnaseqMod","qdnaseqRelToAbs","splitInput")){
     argparse <- optparse::add_option(object = argparse,"--sampleName",action = "store",
                                      type = "character",default = NULL,
                                      help = "sample name string")
@@ -31,13 +31,13 @@ setArgs <- function(script=NULL){
   if(script %in% c("combineResults","downsampleBams","gridsearch","qdnaseqRelToAbs")){
     argparse <- optparse::add_option(object = argparse,"--rds",action = "store",
                                      type = "character",default = NULL,
-                                     help = "Path for rds input file")
+                                     help = "Path(s) for rds input file (comma-separated)")
   }
 
   if(script %in% c("autofit","combineResults","splitInput","computeSignatures")){
     argparse <- optparse::add_option(object = argparse,"--tsv",action = "store",
                                      type = "character",default = NULL,
-                                     help = "Input path for TSV file")
+                                     help = "Path(s) for TSV file (comma-separated)")
   }
 
   if(script %in% c("downsampleBams","gridsearch","qdnaseqMod","qdnaseqRelToAbs")){
@@ -49,7 +49,7 @@ setArgs <- function(script=NULL){
   if(script == "combineResults"){
     argparse <- optparse::add_option(object = argparse,"--tab",action = "store",
                                      type = "character",default = NULL,
-                                     help = "Path for tab input file")
+                                     help = "Path(s) for tab input file (comma-separated)")
   }
 
   if(script %in% c("autofit","combineResults","gridsearch","qdnaseqRelToAbs","splitInput")){
@@ -70,12 +70,16 @@ setArgs <- function(script=NULL){
                                      help = "Path for tab output file")
   }
 
-  if(script %in% c("gridsearch","qdnaseqRelToAbs","computeSignatures")){
+  if(script %in% c("gridsearch","qdnaseqRelToAbs")){
     argparse <- optparse::add_option(object = argparse,"--plotOut",action = "store",
                                      type = "character",default = NULL,
-                                     help = "Path for plotting output file") |>
-      optparse::add_option("--project",action = "store",type = "character",
-                           default = NULL,help = "charater string for project name")
+                                     help = "Path for plotting output file")
+  }
+
+  if(script %in% c("gridsearch")){
+    argparse <- optparse::add_option(object = argparse,"--project",action = "store",
+                                     type = "character",default = NULL,
+                                     help = "charater string for project name")
   }
 
   if(script == "bamCheck"){
@@ -87,9 +91,12 @@ setArgs <- function(script=NULL){
   if(script %in% c("gridsearch","qdnaseqMod","qdnaseqRelToAbs","computeSignatures")){
     argparse <- optparse::add_option(object = argparse,"--genome",action = "store",
                                      type = "character",default = NULL,
-                                     help = "string of genome build") |>
-      optparse::add_option("--bin",action = "store",type = "double",
-                           default = NULL,help = "bin size in kilobases")
+                                     help = "string of genome build")
+  }
+  if(script %in% c("gridsearch","qdnaseqMod","computeSignatures")){
+    argparse <- optparse::add_option(object = argparse,"--bin",action = "store",
+                                     type = "double",default = NULL,
+                                     help = "bin size in kilobases")
   }
 
   if(script == "autofit"){
@@ -136,7 +143,7 @@ setArgs <- function(script=NULL){
                          default = NULL,help = "Filter homozygous loss proportion") |>
       optparse::add_option("--homozygous_prop",action = "store",type = "double",
                          default = NULL,help = "Genome proportion in Basepairs") |>
-      optparse::add_option("--homozygous_thrsh",action = "store",type = "double",
+      optparse::add_option("--homozygous_threshold",action = "store",type = "double",
                          default = NULL,help = "Threshold for homozygous loss")
   }
 

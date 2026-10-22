@@ -10,10 +10,10 @@
 #' @returns plot
 #' @export
 plotProfile <- function(relcn = NULL,
-                        ploidy = NA,
-                        purity = NA,
-                        clonality = NA,
-                        rmse = NA,
+                        ploidy = NULL,
+                        purity = NULL,
+                        clonality = NULL,
+                        rmse = NULL,
                         yrange = NULL) {
   if (is.null(relcn)) {
     stop("no data")
@@ -33,7 +33,7 @@ plotProfile <- function(relcn = NULL,
     }
   } else{
     if (!is.numeric(yrange)) {
-      stop("yrange must be a integer")
+      stop("yrange must be numeric")
     }
   }
   # Plot abs fit

@@ -29,7 +29,7 @@ smoothSample <- function(relcn = NULL,
     sdadjust <- 1.5
 
     segnum <- getSegCount(currsamp)
-    while(segnum > maxseg & sdadjust < 5){
+    while(any(segnum > maxseg) && sdadjust < 5){
       currsamp <- QDNAseqmod::segmentBins(currsamp, transformFun = "sqrt",
                                           undo.SD = sdadjust, seeds = seed)
       segnum <- getSegCount(currsamp)

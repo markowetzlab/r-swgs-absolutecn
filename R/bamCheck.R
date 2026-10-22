@@ -10,7 +10,7 @@ bamCheck <- function(x = NULL,filetype = NULL,outname = NULL) {
   if (is.null(x)) {
     stop("no BAMs provided")
   } else if(!file.exists(x)){
-    stop("BAM file does not exist")
+    stop(paste0("BAM file does not exist - ",x))
   }
 
   if (is.null(outname)) {

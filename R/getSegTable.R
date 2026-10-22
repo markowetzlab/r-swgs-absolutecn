@@ -17,22 +17,22 @@ getSegTable <- function(x) {
       colnames(sn) <- sampleName
     }
     segTable <- c()
-    for (s in colnames(sn)) {
-      for (c in unique(fdfiltfull$chromosome)) {
-        snfilt <- sn[fdfiltfull$chromosome == c, colnames(sn) == s]
-        fdfilt <- fdfiltfull[fdfiltfull$chromosome == c, ]
+    for (smp in colnames(sn)) {
+      for (chr in unique(fdfiltfull$chromosome)) {
+        snfilt <- sn[fdfiltfull$chromosome == chr, colnames(sn) == smp]
+        fdfilt <- fdfiltfull[fdfiltfull$chromosome == chr, ]
         sn.rle <- rle(snfilt)
         starts <- cumsum(c(1, sn.rle$lengths[-length(sn.rle$lengths)]))
         ends <- cumsum(sn.rle$lengths)
 
-        segtmp <- do.call(rbind, lapply(1:length(sn.rle$lengths), function(s) {
-          from <- fdfilt$start[starts[s]]
-          to <- fdfilt$end[ends[s]]
-          segValue <- sn.rle$value[s]
-          c(fdfilt$chromosome[starts[s]], from, to, segValue)
+        segtmp <- do.call(rbind, lapply(1:length(sn.rle$lengths), function(i) {
+          from <- fdfilt$start[starts[i]]
+          to <- fdfilt$end[ends[i]]
+          segValue <- sn.rle$values[i]
+          c(fdfilt$chromosome[starts[i]], from, to, segValue)
         }))
 
-        segTableRaw <- cbind(segtmp, sample = rep(s, times = nrow(segtmp)))
+        segTableRaw <- cbind(segtmp, sample = rep(smp, times = nrow(segtmp)))
         segTable <- rbind(segTable, segTableRaw)
       }
     }
