@@ -1,5 +1,5 @@
 Package: rswgsabsolutecn
-Title: r-swgs-absolutecn
+Title: r-swgs-absolutecn package to support shallow genome absolute copy number fitting pipeline (swgs-absbolutecn)
 Version: 1.1.0
 Authors@R: 
     person("Philip", "Smith", , "philip.smith@cruk.cam.ac.uk", role = c("aut", "cre"))
@@ -13,7 +13,7 @@ LazyData: true
 biocViews:
 Imports: 
     Biobase,
-    dplyr,
+    dplyr (>= 1.1.00),
     graphics,
     optparse,
     parsnip,

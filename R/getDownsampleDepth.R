@@ -4,7 +4,7 @@
 #' @param purity numeric purity value
 #' @param nbins_ref_genome number of bins in reference genome
 #' @param rpc minimum read count per bin per copy
-#' @param ratio availble/used read ratio
+#' @param ratio available/used read ratio
 #'
 #' @returns numeric
 #' @export

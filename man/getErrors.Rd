@@ -7,7 +7,7 @@
 getErrors(data = NULL)
 }
 \arguments{
-\item{data}{list of numeric vectors}
+\item{data}{list of numeric CN vectors and chromosomes}
 }
 \value{
 named numeric vector

@@ -21,7 +21,7 @@ getDownsampleDepth(
 
 \item{rpc}{minimum read count per bin per copy}
 
-\item{ratio}{availble/used read ratio}
+\item{ratio}{available/used read ratio}
 }
 \value{
 numeric

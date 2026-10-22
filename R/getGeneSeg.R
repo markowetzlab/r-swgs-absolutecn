@@ -1,6 +1,7 @@
 #' getGeneSeg
 #'
-#' @param target character string of genomic region in format "N:start-end"
+#' @param target character string of genomic region in format "chr:start-end"
+#'  including chr prefix, autosomes, and X/Y
 #' @param abs_data QDNASeq object of class "QDNAseqCopyNumbers"
 #' @param genome reference genome
 #'

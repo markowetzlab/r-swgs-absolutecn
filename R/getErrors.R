@@ -1,6 +1,6 @@
 #' getErrors
 #'
-#' @param data list of numeric vectors
+#' @param data list of numeric CN vectors and chromosomes
 #'
 #' @returns named numeric vector
 #' @export

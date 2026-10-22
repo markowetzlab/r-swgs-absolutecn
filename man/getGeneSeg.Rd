@@ -7,7 +7,8 @@
 getGeneSeg(target = NULL, abs_data = NULL, genome = NULL)
 }
 \arguments{
-\item{target}{character string of genomic region in format "N:start-end"}
+\item{target}{character string of genomic region in format "chr:start-end"
+including chr prefix, autosomes, and X/Y}
 
 \item{abs_data}{QDNASeq object of class "QDNAseqCopyNumbers"}
 

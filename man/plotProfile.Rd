@@ -6,10 +6,10 @@
 \usage{
 plotProfile(
   relcn = NULL,
-  ploidy = NA,
-  purity = NA,
-  clonality = NA,
-  rmse = NA,
+  ploidy = NULL,
+  purity = NULL,
+  clonality = NULL,
+  rmse = NULL,
   yrange = NULL
 )
 }
